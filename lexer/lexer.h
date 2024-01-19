@@ -45,3 +45,4 @@ Token *next_token(Lexer *lexer);
 Token *new_token(TokenType type, char *literal);
 void print_token(Token *token);
 // void new(char *input);
+

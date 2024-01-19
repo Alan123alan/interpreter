@@ -2,9 +2,18 @@
 #include <stdio.h>
 #include "lexer.h"
 
+void delimeters_and_operators_test(void);
+void add_two_numbers_test(void);
+
 int main(void){
+    delimeters_and_operators_test();
+    add_two_numbers_test();
+    return 0;
+}
+
+void delimeters_and_operators_test(void){
     char *input = "=+(){},;";
-    Token tests[9] = {
+    Token tests[] = {
         {ASSIGN, "="},
         {PLUS, "+"},
         {LPAREN, "("},
@@ -20,10 +29,54 @@ int main(void){
         Token *token = next_token(lexer);
         printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
         printf("lexer token literal: %s, test token literal: %s.\n", token->literal, tests[i].literal);
-        // if(token->type != tests[i].type){
-        //     printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
-        // }
-        // printf("token type: %s, token literal %s.\n", tests[i].type, tests[i].literal);
     }
-    return 0;
+}
+
+
+void add_two_numbers_test(void){
+    char *input =
+    "let five = 5;"
+    "let ten = 10;"
+    "let add = fn(x, y){x+y;};"
+    "let result = add(five, ten);";
+    printf("%s\n", input);
+    Lexer *lexer = new_lexer(input);
+    Token tests[] ={
+        {LET, "let"},
+        {IDENT, "five"},
+        {ASSIGN, "="},
+        {INT, "5"},
+        {SEMICOLON, ";"},
+        {LET, "let"},
+        {IDENT, "ten"},
+        {ASSIGN, "="},
+        {INT, "10"},
+        {SEMICOLON, ";"},
+        {LET, "let"},
+        {IDENT, "add"},
+        {ASSIGN, "="},
+        {FUNCTION, "fn"},
+        {LPAREN, "("},
+        {IDENT, "x"},
+        {COMMA, ","},
+        {IDENT, "y"},
+        {RPAREN, ")"},
+        {LBRACE, "{"},
+        {IDENT, "x"},
+        {PLUS, "+"},
+        {IDENT, "y"},
+        {SEMICOLON, ";"},
+        {RBRACE, "}"},
+        {SEMICOLON, ";"},
+        {LET, "let"},
+        {IDENT, "result"},
+        {ASSIGN, "="},
+        {IDENT, "add"},
+        {LPAREN, "("},
+        {IDENT, "five"},
+        {COMMA, ","},
+        {IDENT, "ten"},
+        {RPAREN, ")"},
+        {SEMICOLON, ";"}
+    };
 }
