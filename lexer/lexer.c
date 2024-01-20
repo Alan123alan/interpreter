@@ -86,9 +86,13 @@ Token *next_token(Lexer *lexer){
                     lexer_read_char(lexer);
                 }
                 int identifier_length = lexer->position - position;
-                char *token_literal = malloc(sizeof(char)*identifier_length);
-                strncpy(token_literal, lexer->input[position], (size_t) identifier_length)
-                token = new_token(IDENT, );
+                char *token_literal = malloc(sizeof(char)*(identifier_length+1));
+                for(int i = 0; i < identifier_length; i++){
+                    token_literal[i] = lexer->input[position+i];    
+                }
+                token_literal[identifier_length] = '\0';
+                printf("token literal found: %s\n", token_literal);
+                token = new_token(IDENT, token_literal);
             }else{
                 token = new_token(ILLEGAL, lexer->ch);
             }

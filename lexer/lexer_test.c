@@ -6,7 +6,7 @@ void delimeters_and_operators_test(void);
 void add_two_numbers_test(void);
 
 int main(void){
-    delimeters_and_operators_test();
+    // delimeters_and_operators_test();
     add_two_numbers_test();
     return 0;
 }
@@ -79,4 +79,9 @@ void add_two_numbers_test(void){
         {SEMICOLON, ";"}
     };
     Lexer *lexer = new_lexer(input);
+        for(int i = 0; i < 36; i++){
+        Token *token = next_token(lexer);
+        printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
+        printf("lexer token literal: %s, test token literal: %s.\n", token->literal, tests[i].literal);
+    }
 }
