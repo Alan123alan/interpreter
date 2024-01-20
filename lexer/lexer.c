@@ -94,7 +94,7 @@ Token *next_token(Lexer *lexer){
                 printf("token literal found: %s\n", token_literal);
                 token = new_token(IDENT, token_literal);
             }else{
-                token = new_token(ILLEGAL, lexer->ch);
+                token = new_token(ILLEGAL, "illegal");
             }
             break;
     }
