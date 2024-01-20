@@ -5,6 +5,12 @@
 #include "lexer.h"
 // #include "../token.c"
 
+const Item keywords[] = {
+    {"fn", FUNCTION},
+    {"let", LET}
+};
+
+
 void print_lexer(Lexer *lexer){
     printf("lexer->input : %s\n", lexer->input);
     printf("lexer->position : %d\n", lexer->position);//index referring to current character being examined
@@ -13,18 +19,18 @@ void print_lexer(Lexer *lexer){
 }
 
 Lexer *new_lexer(char *input){
+    //strlen will only count up but not include the null terminator
     size_t input_len = strlen(input);
-    printf("length of input? %zu\n", strlen(input));
-    char *lexer_input = malloc(sizeof(char)*input_len);
+    //explicitly adding one byte for the null terminator
+    char *lexer_input = malloc(sizeof(char)*(input_len+1));
     //memory allocating just for the size of the lexer should be enough since pointers are constant size
     Lexer *lexer = malloc(sizeof(Lexer));
+    //copying the chars from input parameter into lexer_input (including null terminator)
     strcpy(lexer_input, input);
-    printf("lexer input: %s\n", lexer_input);
     lexer->input = lexer_input;
     lexer->position = 0;
     lexer->read_position = 0;
     lexer_read_char(lexer);
-    // lexer->ch = lexer->input[0];
     print_lexer(lexer);
     return lexer;
 }
@@ -81,25 +87,53 @@ Token *next_token(Lexer *lexer){
         
         default:
             if(isalpha(lexer->ch) || lexer->ch == '_'){
-                int position = lexer->position;
-                while (isalpha(lexer->ch) || lexer->ch == '_'){
-                    lexer_read_char(lexer);
-                }
-                int identifier_length = lexer->position - position;
-                char *token_literal = malloc(sizeof(char)*(identifier_length+1));
-                for(int i = 0; i < identifier_length; i++){
-                    token_literal[i] = lexer->input[position+i];    
-                }
-                token_literal[identifier_length] = '\0';
-                printf("token literal found: %s\n", token_literal);
-                token = new_token(IDENT, token_literal);
-            }else{
+                // int position = lexer->position;
+                // while (isalpha(lexer->ch) || lexer->ch == '_'){
+                //     lexer_read_char(lexer);
+                // }
+                // int identifier_length = lexer->position - position;
+                // char *token_literal = malloc(sizeof(char)*(identifier_length+1));
+                // for(int i = 0; i < identifier_length; i++){
+                //     token_literal[i] = lexer->input[position+i];    
+                // }
+                // token_literal[identifier_length] = '\0';
+                char *literal = get_identifier_or_keyword_literal(lexer);
+                printf("Possible identifier or keyword literal: %s\n", literal);
+                TokenType type = get_identifier_or_keyword_type(literal);
+                printf("token type linked to the literal found: %s\n", type);
+                token = new_token(type, literal);
+            }
+            else{
                 token = new_token(ILLEGAL, "illegal");
             }
             break;
     }
     lexer_read_char(lexer);
     return token;
+}
+
+char *get_identifier_or_keyword_literal(Lexer *lexer){
+    int position = lexer->position;
+    while (isalpha(lexer->ch) || lexer->ch == '_'){
+        lexer_read_char(lexer);
+    }
+    int identifier_or_keyword_length = lexer->position - position;
+    char *identifier_or_keyword = malloc(sizeof(char)*(identifier_or_keyword_length+1));
+    for(int i = 0; i < identifier_or_keyword_length; i++){
+        identifier_or_keyword[i] = lexer->input[position+i];    
+    }
+    identifier_or_keyword[identifier_or_keyword_length] = '\0';
+    return identifier_or_keyword;
+}
+
+TokenType get_identifier_or_keyword_type(char *identifier_or_keyword_literal){
+    size_t keyword_count = sizeof(keywords)/sizeof(Item);
+    for(int i = 0; i < (int) keyword_count; i++){
+        if(strcmp(identifier_or_keyword_literal, keywords[i].key) == 0){
+            return keywords[i].value;
+        }
+    }
+    return IDENT;
 }
 
 void print_token(Token *token){

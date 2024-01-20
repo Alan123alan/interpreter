@@ -5,7 +5,6 @@ typedef struct{
     char* literal;
 }Token; 
 
-
 /******** TOKEN TYPES ********/
 
 //identifiers + literals
@@ -31,6 +30,17 @@ typedef struct{
 #define ILLEGAL "ILLEGAL"
 #define END "END"
 
+typedef struct{
+    char *key;
+    char *value;
+}Item;
+
+// const Item [] = {
+//     {"fn", FUNCTION},
+//     {"let", LET}
+// };
+
+
 typedef struct {
     char *input;
     int position;
@@ -44,5 +54,7 @@ void lexer_read_char(Lexer *lexer);
 Token *next_token(Lexer *lexer);
 Token *new_token(TokenType type, char *literal);
 void print_token(Token *token);
+TokenType get_identifier_or_keyword_type(char *literal);
+char *get_identifier_or_keyword_literal(Lexer *lexer);
 // void new(char *input);
 
