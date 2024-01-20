@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "lexer.h"
 // #include "../token.c"
 
@@ -79,7 +80,18 @@ Token *next_token(Lexer *lexer){
             break;
         
         default:
-            token = new_token(END, "");
+            if(isalpha(lexer->ch) || lexer->ch == '_'){
+                int position = lexer->position;
+                while (isalpha(lexer->ch) || lexer->ch == '_'){
+                    lexer_read_char(lexer);
+                }
+                int identifier_length = lexer->position - position;
+                char *token_literal = malloc(sizeof(char)*identifier_length);
+                strncpy(token_literal, lexer->input[position], (size_t) identifier_length)
+                token = new_token(IDENT, );
+            }else{
+                token = new_token(ILLEGAL, lexer->ch);
+            }
             break;
     }
     lexer_read_char(lexer);

@@ -40,7 +40,6 @@ void add_two_numbers_test(void){
     "let add = fn(x, y){x+y;};"
     "let result = add(five, ten);";
     printf("%s\n", input);
-    Lexer *lexer = new_lexer(input);
     Token tests[] ={
         {LET, "let"},
         {IDENT, "five"},
@@ -79,4 +78,5 @@ void add_two_numbers_test(void){
         {RPAREN, ")"},
         {SEMICOLON, ";"}
     };
+    Lexer *lexer = new_lexer(input);
 }
