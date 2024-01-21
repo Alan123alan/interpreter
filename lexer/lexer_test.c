@@ -91,5 +91,6 @@ void add_two_numbers_test(void){
         Token *token = next_token(lexer);
         printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
         printf("lexer token literal: %s, test token literal: %s.\n", token->literal, tests[i].literal);
+        printf("\n");
     }
 }

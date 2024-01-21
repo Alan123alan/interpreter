@@ -91,20 +91,10 @@ Token *next_token(Lexer *lexer){
         
         default:
             if(isalpha(lexer->ch) || lexer->ch == '_'){
-                // int position = lexer->position;
-                // while (isalpha(lexer->ch) || lexer->ch == '_'){
-                //     lexer_read_char(lexer);
-                // }
-                // int identifier_length = lexer->position - position;
-                // char *token_literal = malloc(sizeof(char)*(identifier_length+1));
-                // for(int i = 0; i < identifier_length; i++){
-                //     token_literal[i] = lexer->input[position+i];    
-                // }
-                // token_literal[identifier_length] = '\0';
                 char *literal = get_identifier_or_keyword_literal(lexer);
-                printf("Possible identifier or keyword literal: %s\n", literal);
+                // printf("Possible identifier or keyword literal: %s\n", literal);
                 TokenType type = get_identifier_or_keyword_type(literal);
-                printf("token type linked to the literal found: %s\n", type);
+                // printf("token type linked to the literal found: %s\n", type);
                 //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
                 token = new_token(type, literal);
                 return token;
@@ -112,6 +102,9 @@ Token *next_token(Lexer *lexer){
             }else if(isdigit(lexer->ch)){
                 char *literal = get_int(lexer); 
                 token = new_token(INT, literal);
+                //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
+                //if no early return the tokenizer skips some characters
+                return token;
             }else{
                 char *literal = malloc(sizeof(char)*2);
                 literal[0] = lexer->ch;
