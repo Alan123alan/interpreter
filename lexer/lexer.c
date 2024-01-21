@@ -31,7 +31,7 @@ Lexer *new_lexer(char *input){
     lexer->position = 0;
     lexer->read_position = 0;
     lexer_read_char(lexer);
-    print_lexer(lexer);
+    // print_lexer(lexer);
     return lexer;
 }
 
@@ -47,6 +47,10 @@ void lexer_read_char(Lexer *lexer){
 
 Token *next_token(Lexer *lexer){
     Token *token;
+    //skip whitespaces since they're not relevant for the tokenizing process
+    if(isspace(lexer->ch)){
+        lexer_read_char(lexer);
+    }
     switch (lexer->ch)
     {
         case '=':
@@ -101,10 +105,21 @@ Token *next_token(Lexer *lexer){
                 printf("Possible identifier or keyword literal: %s\n", literal);
                 TokenType type = get_identifier_or_keyword_type(literal);
                 printf("token type linked to the literal found: %s\n", type);
+                //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
                 token = new_token(type, literal);
-            }
-            else{
-                token = new_token(ILLEGAL, "illegal");
+                return token;
+                // free(literal);
+            }else if(isdigit(lexer->ch)){
+                char *literal = get_int(lexer); 
+                token = new_token(INT, literal);
+            }else{
+                char *literal = malloc(sizeof(char)*2);
+                literal[0] = lexer->ch;
+                literal[1] = '\0';
+                printf("lexer->ch: %c\n", lexer->ch);
+                printf("LITERAL: %s\n", literal);
+                token = new_token(ILLEGAL, literal);
+                // free(literal);
             }
             break;
     }
@@ -136,6 +151,20 @@ TokenType get_identifier_or_keyword_type(char *identifier_or_keyword_literal){
     return IDENT;
 }
 
+char* get_int(Lexer *lexer){
+    int position = lexer->position;
+    while(isdigit(lexer->ch)){
+        lexer_read_char(lexer);
+    }
+    int int_str_length = lexer->position - position;
+    char *int_str = malloc(sizeof(char)*(int_str_length+1));
+    for(int i = 0; i < int_str_length; i++){
+        int_str[i] = lexer->input[position+i];
+    }
+    int_str[int_str_length] = '\0';
+    return int_str;
+}
+
 void print_token(Token *token){
     printf("token->type: %s\n", token->type);
     printf("token->literal: %s\n", token->literal);
@@ -151,6 +180,6 @@ Token *new_token(TokenType type, char *literal){
     strcpy(token_literal, literal);
     token->type = token_type;
     token->literal = token_literal;
-    print_token(token);
+    // print_token(token);
     return token;
 }

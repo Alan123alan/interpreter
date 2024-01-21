@@ -56,5 +56,6 @@ Token *new_token(TokenType type, char *literal);
 void print_token(Token *token);
 TokenType get_identifier_or_keyword_type(char *literal);
 char *get_identifier_or_keyword_literal(Lexer *lexer);
+char *get_int(Lexer *lexer);
 // void new(char *input);
 
