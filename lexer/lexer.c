@@ -95,13 +95,17 @@ Token *next_token(Lexer *lexer){
                 // printf("Possible identifier or keyword literal: %s\n", literal);
                 TokenType type = get_identifier_or_keyword_type(literal);
                 // printf("token type linked to the literal found: %s\n", type);
-                //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
                 token = new_token(type, literal);
+                //a new buffer is allocated when new_token is called and the contents of literal buffer are moved so no need to keep this reference
+                free(literal);
+                //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
+                //if no early return the tokenizer skips some characters
                 return token;
-                // free(literal);
             }else if(isdigit(lexer->ch)){
                 char *literal = get_int(lexer); 
                 token = new_token(INT, literal);
+                //a new buffer is allocated when new_token is called and the contents of literal buffer are moved so no need to keep this reference
+                free(literal);
                 //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
                 //if no early return the tokenizer skips some characters
                 return token;

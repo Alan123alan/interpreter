@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "lexer.h"
 
 void delimeters_and_operators_test(void);
@@ -88,7 +89,7 @@ void add_two_numbers_test(void){
     size_t test_count = sizeof(tests)/sizeof(Token);
     printf("Currently executing %zu tests.\n", test_count);
     Lexer *lexer = new_lexer(input);
-    for(int i = 0; i < 36; i++){
+    for(int i = 0; i < (int) test_count; i++){
         Token *token = next_token(lexer);
         assert(strcmp(token->type, tests[i].type) == 0);
         assert(strcmp(token->literal, tests[i].literal) == 0);
@@ -96,5 +97,11 @@ void add_two_numbers_test(void){
         printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
         printf("lexer token literal: %s, test token literal: %s.\n", token->literal, tests[i].literal);
         printf("\n");
+        free(token->type);
+        free(token->literal);
+        free(token);
     }
+    //Lexer struct contains a char*, to correctly deallocate memory first free the char* then the *Lexer
+    free(lexer->input);
+    free(lexer);
 }
