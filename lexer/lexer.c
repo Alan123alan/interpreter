@@ -85,6 +85,30 @@ Token *next_token(Lexer *lexer){
             token = new_token(PLUS, "+");
             break;
         
+        case '-':
+            token = new_token(MINUS, "-");
+            break;
+        
+        case '/':
+            token = new_token(SLASH, "/");
+            break;
+ 
+        case '*':
+            token = new_token(ASTERISK, "*");
+            break;
+
+        case '!':
+            token = new_token(BANG, "!");
+            break;
+ 
+        case '<':
+            token = new_token(LT, "<");
+            break;
+            
+        case '>':
+            token = new_token(GT, ">");
+            break;
+       
         case '\0':
             token = new_token(END, "");
             break;
@@ -104,7 +128,6 @@ Token *next_token(Lexer *lexer){
             }else if(isdigit(lexer->ch)){
                 char *literal = get_int(lexer); 
                 token = new_token(INT, literal);
-                //a new buffer is allocated when new_token is called and the contents of literal buffer are moved so no need to keep this reference
                 free(literal);
                 //early return due to get_identifier_or_keyword_literal already called lexer_read_char repeatedly
                 //if no early return the tokenizer skips some characters

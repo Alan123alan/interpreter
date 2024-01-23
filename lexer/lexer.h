@@ -12,8 +12,14 @@ typedef struct{
 #define INT "INT"
 
 //operators
-#define ASSIGN "ASSIGN"
-#define PLUS "PLUS"
+#define ASSIGN "="
+#define PLUS "+"
+#define BANG "!"
+#define MINUS "-"
+#define SLASH "/"
+#define ASTERISK "*"
+#define LT "<"
+#define GT ">"
 
 //delimiters
 #define COMMA ","
