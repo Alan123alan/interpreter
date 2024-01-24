@@ -7,7 +7,12 @@
 
 const Item keywords[] = {
     {"fn", FUNCTION},
-    {"let", LET}
+    {"let", LET},
+    {"true", TRUE},
+    {"false", FALSE},
+    {"if", IF},
+    {"else", ELSE},
+    {"return", RETURN}
 };
 
 

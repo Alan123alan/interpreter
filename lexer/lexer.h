@@ -32,6 +32,11 @@ typedef struct{
 //keywords
 #define FUNCTION "FUNCTION"
 #define LET "LET"
+#define TRUE "TRUE"
+#define FALSE "FALSE"
+#define IF "IF"
+#define ELSE "ELSE"
+#define RETURN "RETURN"
 
 #define ILLEGAL "ILLEGAL"
 #define END "END"

@@ -8,11 +8,13 @@
 void delimeters_and_operators_test(void);
 void add_two_numbers_test(void);
 void new_operators_test(void);
+void new_keywords_test(void);
 
 int main(void){
     // delimeters_and_operators_test();
     // add_two_numbers_test();
-    new_operators_test();
+    // new_operators_test();
+    new_keywords_test();
     return 0;
 }
 
@@ -190,5 +192,50 @@ void new_operators_test(void){
         free(token);
     }
     free(lexer->input);
+    free(lexer);
+}
+
+
+void new_keywords_test(void){
+    char *input = "if (5 < 10) {"
+    "   return true;"
+    "} else {"
+    "   return false;"
+    "}";
+    Token tests[] = {
+        {IF, "if"},
+        {LPAREN, "("},
+        {INT, "5"},
+        {LT, "<"},
+        {INT, "10"},
+        {RPAREN, ")"},
+        {LBRACE, "{"},
+        {RETURN, "return"},
+        {TRUE, "true"},
+        {SEMICOLON, ";"},
+        {RBRACE, "}"},
+        {ELSE, "else"},
+        {LBRACE, "{"},
+        {RETURN, "return"},
+        {FALSE, "false"},
+        {SEMICOLON, ";"},
+        {RBRACE, "}"}
+    };
+    size_t number_of_tests = sizeof(tests)/sizeof(Token);
+    printf("input is %zu characters long\n", strlen(input));
+    printf("Number of tests to pass: %zu\n", number_of_tests);
+    Lexer *lexer = new_lexer(input);
+    for(int i = 0; i < (int) number_of_tests; i++){
+        Token *token = next_token(lexer);
+        assert(strcmp(token->type, tests[i].type) == 0);
+        assert(strcmp(token->literal, tests[i].literal) == 0);
+        printf("Test #%d passed\n", i+1);
+        printf("tests->type %s == token->type %s\n", tests[i].type, token->type);
+        printf("tests->literal %s == token->literal %s\n", tests[i].literal, token->literal);
+        free(token->literal);
+        free(token->type);
+        free(token);
+    }
+    free(input);
     free(lexer);
 }
