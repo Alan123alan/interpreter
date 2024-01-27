@@ -120,6 +120,7 @@ Token *next_token(Lexer *lexer){
         
         default:
             if(isalpha(lexer->ch) || lexer->ch == '_'){
+                printf("This should stop when you get to the return keyword %c\n", lexer->ch);
                 char *literal = get_identifier_or_keyword_literal(lexer);
                 // printf("Possible identifier or keyword literal: %s\n", literal);
                 TokenType type = get_identifier_or_keyword_type(literal);
