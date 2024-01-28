@@ -120,51 +120,10 @@ void add_two_numbers_test(void){
 }
 
 void new_operators_test(void){
-    char *input =     
-    "let five = 5;"
-    "let ten = 10;"
-    "let add = fn(x, y){x+y;};"
-    "let result = add(five, ten);"
-    "!-/*5;"
+    char *input = "!-/*5;"
     "5 < 10 > 5;";
 
     Token tests[] = {
-        {LET, "let"},
-        {IDENT, "five"},
-        {ASSIGN, "="},
-        {INT, "5"},
-        {SEMICOLON, ";"},
-        {LET, "let"},
-        {IDENT, "ten"},
-        {ASSIGN, "="},
-        {INT, "10"},
-        {SEMICOLON, ";"},
-        {LET, "let"},
-        {IDENT, "add"},
-        {ASSIGN, "="},
-        {FUNCTION, "fn"},
-        {LPAREN, "("},
-        {IDENT, "x"},
-        {COMMA, ","},
-        {IDENT, "y"},
-        {RPAREN, ")"},
-        {LBRACE, "{"},
-        {IDENT, "x"},
-        {PLUS, "+"},
-        {IDENT, "y"},
-        {SEMICOLON, ";"},
-        {RBRACE, "}"},
-        {SEMICOLON, ";"},
-        {LET, "let"},
-        {IDENT, "result"},
-        {ASSIGN, "="},
-        {IDENT, "add"},
-        {LPAREN, "("},
-        {IDENT, "five"},
-        {COMMA, ","},
-        {IDENT, "ten"},
-        {RPAREN, ")"},
-        {SEMICOLON, ";"},
         {BANG, "!"},
         {MINUS, "-"},
         {SLASH, "/"},
@@ -178,14 +137,15 @@ void new_operators_test(void){
         {INT, "5"},
         {SEMICOLON, ";"},
     };
+    size_t number_of_tests = sizeof(tests)/sizeof(Token);
     printf("input is %zu characters long", strlen(input));
-    printf("Number of tests to pass: %zu", sizeof(tests)/sizeof(Token));
+    printf("number of tests to pass: %zu", number_of_tests);
     Lexer *lexer = new_lexer(input);
-    for(int i = 0; i < (int) strlen(input); i++){
+    for(size_t i = 0; i < number_of_tests; i++){
         Token *token = next_token(lexer);
         assert(strcmp(token->type, tests[i].type) == 0);
         assert(strcmp(token->literal, tests[i].literal) == 0);
-        printf("Test #%d passed.\n", i+1);
+        printf("test #%zu passed.\n", i+1);
         printf("lexer token type: %s, test token type: %s.\n", token->type, tests[i].type);
         printf("lexer token literal: %s, test token literal: %s.\n", token->literal, tests[i].literal);
         printf("\n");
@@ -225,13 +185,13 @@ void new_keywords_test(void){
     };
     size_t number_of_tests = sizeof(tests)/sizeof(Token);
     printf("input is %zu characters long\n", strlen(input));
-    printf("Number of tests to pass: %zu\n", number_of_tests);
+    printf("number of tests to pass: %zu\n", number_of_tests);
     Lexer *lexer = new_lexer(input);
     for(int i = 0; i < (int) number_of_tests; i++){
         Token *token = next_token(lexer);
         assert(strcmp(token->type, tests[i].type) == 0);
         assert(strcmp(token->literal, tests[i].literal) == 0);
-        printf("Test #%d passed\n", i+1);
+        printf("test #%d passed\n", i+1);
         printf("tests->type %s == token->type %s\n", tests[i].type, token->type);
         printf("tests->literal %s == token->literal %s\n", tests[i].literal, token->literal);
         free(token->literal);
@@ -256,13 +216,14 @@ void double_char_operator_test(void){
         {SEMICOLON, ";"},
     };
     size_t number_of_tests = sizeof(tests)/sizeof(Token);
-    printf("Number of tests to pass: %zu.\n", number_of_tests);
+    printf("input is %zu characters long", strlen(input));
+    printf("number of tests to pass: %zu.\n", number_of_tests);
     Lexer *lexer = new_lexer(input);
     for(size_t i = 0; i < number_of_tests; i++){
         Token *token = next_token(lexer);
         assert(strcmp(token->type, tests[i].type) == 0);
         assert(strcmp(token->literal, tests[i].literal) == 0);
-        printf("Test #%zu passed\n", i+1);
+        printf("test #%zu passed\n", i+1);
         printf("tests->type %s == token->type %s\n", tests[i].type, token->type);
         printf("tests->literal %s == token->literal %s\n", tests[i].literal, token->literal);
         free(token->type);
