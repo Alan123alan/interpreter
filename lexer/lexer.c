@@ -53,7 +53,7 @@ void lexer_read_char(Lexer *lexer){
 Token *next_token(Lexer *lexer){
     Token *token;
     //skip whitespaces since they're not relevant for the tokenizing process
-    if(isspace(lexer->ch)){
+    while(isspace(lexer->ch)){
         lexer_read_char(lexer);
     }
     switch (lexer->ch)

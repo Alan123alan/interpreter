@@ -199,9 +199,9 @@ void new_operators_test(void){
 void new_keywords_test(void){
     char *input = "if (5 < 10) {"
     " return true;"
-    "} else {"
+    "   } else {"
     "return false;"
-    " }";
+    "  }";
     Token tests[] = {
         {IF, "if"},
         {LPAREN, "("},
