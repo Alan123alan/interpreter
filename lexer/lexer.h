@@ -20,6 +20,8 @@ typedef struct{
 #define ASTERISK "*"
 #define LT "<"
 #define GT ">"
+#define EQ "=="
+#define NOT_EQ "!="
 
 //delimiters
 #define COMMA ","
@@ -68,5 +70,6 @@ void print_token(Token *token);
 TokenType get_identifier_or_keyword_type(char *literal);
 char *get_identifier_or_keyword_literal(Lexer *lexer);
 char *get_int(Lexer *lexer);
+char lexer_peek_char(Lexer *lexer);
 // void new(char *input);
 

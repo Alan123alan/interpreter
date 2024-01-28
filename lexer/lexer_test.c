@@ -9,12 +9,14 @@ void delimeters_and_operators_test(void);
 void add_two_numbers_test(void);
 void new_operators_test(void);
 void new_keywords_test(void);
+void double_char_operator_test(void);
 
 int main(void){
     // delimeters_and_operators_test();
     // add_two_numbers_test();
     // new_operators_test();
-    new_keywords_test();
+    // new_keywords_test();
+    double_char_operator_test();
     return 0;
 }
 
@@ -234,6 +236,37 @@ void new_keywords_test(void){
         printf("tests->literal %s == token->literal %s\n", tests[i].literal, token->literal);
         free(token->literal);
         free(token->type);
+        free(token);
+    }
+    free(lexer->input);
+    free(lexer);
+}
+
+void double_char_operator_test(void){
+    char *input = "10 == 10;"
+    " 10 != 9;";
+    Token tests[] = {
+        {INT, "10"},
+        {EQ, "=="},
+        {INT, "10"},
+        {SEMICOLON, ";"},
+        {INT, "10"},
+        {NOT_EQ, "!="},
+        {INT, "9"},
+        {SEMICOLON, ";"},
+    };
+    size_t number_of_tests = sizeof(tests)/sizeof(Token);
+    printf("Number of tests to pass: %zu.\n", number_of_tests);
+    Lexer *lexer = new_lexer(input);
+    for(size_t i = 0; i < number_of_tests; i++){
+        Token *token = next_token(lexer);
+        assert(strcmp(token->type, tests[i].type) == 0);
+        assert(strcmp(token->literal, tests[i].literal) == 0);
+        printf("Test #%zu passed\n", i+1);
+        printf("tests->type %s == token->type %s\n", tests[i].type, token->type);
+        printf("tests->literal %s == token->literal %s\n", tests[i].literal, token->literal);
+        free(token->type);
+        free(token->literal);
         free(token);
     }
     free(lexer->input);

@@ -40,6 +40,8 @@ Lexer *new_lexer(char *input){
     return lexer;
 }
 
+// reads the next character from input and advances position and read_position
+// pointers
 void lexer_read_char(Lexer *lexer){
     if(lexer->read_position > (int) strlen(lexer->input)){
         lexer->ch = '\0';
@@ -50,15 +52,30 @@ void lexer_read_char(Lexer *lexer){
     lexer->read_position++;
 }
 
+// checks the value of the next char to current position without
+// advancing the lexer
+char lexer_peek_char(Lexer *lexer){
+    if(lexer->read_position >= (int) strlen(lexer->input)){
+        return '\0';
+    }
+    char peeked_char = lexer->input[lexer->read_position];
+    return peeked_char; 
+}
+
 Token *next_token(Lexer *lexer){
     Token *token;
-    //skip whitespaces since they're not relevant for the tokenizing process
+    // keeps skipping whitespaces since they're not relevant for the tokenizing process
     while(isspace(lexer->ch)){
         lexer_read_char(lexer);
     }
     switch (lexer->ch)
     {
         case '=':
+            if(lexer_peek_char(lexer) == '='){
+                token = new_token(EQ, "==");
+                lexer_read_char(lexer);
+                break;
+            }
             token = new_token(ASSIGN, "=");
             break;
         
@@ -103,6 +120,11 @@ Token *next_token(Lexer *lexer){
             break;
 
         case '!':
+            if(lexer_peek_char(lexer) == '='){
+                token = new_token(NOT_EQ, "!=");
+                lexer_read_char(lexer);
+                break;
+            }
             token = new_token(BANG, "!");
             break;
  
