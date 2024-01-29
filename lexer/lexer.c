@@ -16,13 +16,6 @@ const Item keywords[] = {
 };
 
 
-void print_lexer(Lexer *lexer){
-    printf("lexer->input : %s\n", lexer->input);
-    printf("lexer->position : %d\n", lexer->position);//index referring to current character being examined
-    printf("lexer->read_position : %d\n", lexer->read_position);//index referrint to next character
-    printf("lexer->ch : %c\n", lexer->ch);//current character being examined
-}
-
 Lexer *new_lexer(char *input){
     //strlen will only count up but not include the null terminator
     size_t input_len = strlen(input);
@@ -36,7 +29,6 @@ Lexer *new_lexer(char *input){
     lexer->position = 0;
     lexer->read_position = 0;
     lexer_read_char(lexer);
-    // print_lexer(lexer);
     return lexer;
 }
 
@@ -213,11 +205,6 @@ char* get_int(Lexer *lexer){
     return int_str;
 }
 
-void print_token(Token *token){
-    printf("token->type: %s\n", token->type);
-    printf("token->literal: %s\n", token->literal);
-}
-
 Token *new_token(TokenType type, char *literal){
     Token *token = malloc(sizeof(Token));
     // size_t type_len = strlen(type);
@@ -228,6 +215,5 @@ Token *new_token(TokenType type, char *literal){
     strcpy(token_literal, literal);
     token->type = token_type;
     token->literal = token_literal;
-    // print_token(token);
     return token;
 }

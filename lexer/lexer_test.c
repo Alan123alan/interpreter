@@ -10,13 +10,15 @@ void add_two_numbers_test(void);
 void new_operators_test(void);
 void new_keywords_test(void);
 void double_char_operator_test(void);
+void repl(void);
 
 int main(void){
     // delimeters_and_operators_test();
     // add_two_numbers_test();
     // new_operators_test();
     // new_keywords_test();
-    double_char_operator_test();
+    // double_char_operator_test();
+    repl();
     return 0;
 }
 
@@ -232,4 +234,27 @@ void double_char_operator_test(void){
     }
     free(lexer->input);
     free(lexer);
+}
+
+void repl(void){
+    //testing a repl and limiting user input to 100 chars
+    printf("REPL input is limited to 100 chars\n");
+    char repl_buffer[100];
+    uint8_t exit_repl = 0;
+    while(exit_repl == 0){
+        printf(">>");
+        fgets(repl_buffer, 100, stdin);
+        repl_buffer[strcspn(repl_buffer, "\n")] = '\0';
+        printf("user input: %s and it's length: %zu\n", repl_buffer, strlen(repl_buffer));
+        printf("is user input equal to 'exit': %d\n", strcmp(repl_buffer, "hello"));
+        printf("\n");
+        if(strcmp(repl_buffer, "exit") == 0){
+            break;
+        }
+        Lexer *lexer = new_lexer(repl_buffer);
+        while(lexer->ch != '\0'){
+            Token *token = next_token(lexer);
+            printf("{Type: %s, Literal: %s}\n", token->type, token->literal);
+        }
+    }
 }
